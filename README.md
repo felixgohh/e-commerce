@@ -1,1 +1,13 @@
-# e-commerce
+# E-Commerce
+
+## Routes
+
+| Route           | HTTP       | Headers(s)                                           | Body                                                         | Description                   | Success Case                                                 | Error Case                           |
+| --------------- | ---------- | ---------------------------------------------------- | ------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------ | ------------------------------------ |
+| `/products`| **GET**| An Authenticated JWT Token| none| Get all product list| Show all the product list in `array of object` :<br> [{ _id: ObjectId,<br> name: String,<br> price: String},...]<br> with status code 200 | Status code: 500, Error info in JSON |
+| `/products`| **POST**| An Authenticated JWT Token | name: String(**Required**),<br>price: String(**Required**) | Create a new product | Show the created product in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String }<br> with status code 201 | Status code: 500, Error info in JSON |
+| `/products/:id` | **GET** | An Authenticated JWT Token | none | Get a single product info | Show the product info in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String}<br> with status code 200 | Status code: 500, Error info in JSON |
+| `/products/:id` | **PUT** | An Authenticated JWT Token | name: String(**Required**),<br>price: String(**Required**) | Update a product information | Show the updated product's info in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String } with status code 200 | Status code: 500, Error info in JSON |
+| `/products/:id` | **DELETE** | An Authenticated JWT Token  | none | Delete an product | Show the deleted product in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String } with status code 200 | Status code: 500, Error info in JSON |
+| `/carts`| **POST**| An Authenticated JWT Token| productId: ObjectId(**Required**),<br>userId: ObjectId(**Required**)| Create a new cart | Show the created cart in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String}<br> with status code 201 | Status code: 500, Error info in JSON |
+| `/carts/:id`| **DELETE**| An Authenticated JWT Token | none | Delete a cart | Show the deleted cart in `object` :<br> { _id: ObjectId,<br> name: String,<br> price: String }<br> with status code 200 | Status code: 500, Error info in JSON |
