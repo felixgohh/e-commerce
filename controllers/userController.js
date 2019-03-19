@@ -1,6 +1,6 @@
 const userModel = require('../models/user')
 const bcryptjs = require('../helpers/bcrypt')
-const jwtSign = require('../helpers/jsonSign')
+const jwt = require('../middlewares/jwt')
 
 class Controller {
     static findAll(req, res) {
@@ -29,7 +29,7 @@ class Controller {
                             email: user.email
                         }
                         let fullName = `${user.first_name} ${user.last_name}`
-                        let token = jwtSign(payload)
+                        let token = jwt.sign(payload)
                         res.status(200).json({ token, userId: user._id, name: fullName })
                     }
                 }
@@ -67,7 +67,7 @@ class Controller {
                     res.status(200).json({
                         userId: user._id,
                         message: 'User successfully logged in',
-                        token: jwtSign({ email: user.email }),
+                        token: jwt.sign({ email: user.email }),
                         data: userLoggedIn
                     })
                 } else {
@@ -80,7 +80,7 @@ class Controller {
                             res.status(201).json({
                                 id: newUser._id,
                                 message: 'New user created',
-                                token: jwtSign({ email: userLoggedIn.email }),
+                                token: jwt.sign({ email: userLoggedIn.email }),
                                 data: userLoggedIn
                             })
                         })
