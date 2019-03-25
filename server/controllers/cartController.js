@@ -2,8 +2,17 @@ const cartModel = require('../models/cart')
 
 class Controller {
     static findAll(req, res) {
+        let condition = {}
+        if (req.query.search) {
+            condition = {
+                userId: req.query.search
+            }
+        }
+
         cartModel
-            .find({})
+            .find(condition)
+            .populate('productId')
+            .populate('userId')
             .then(carts => {
                 res.status(200).json(carts)
             })
@@ -19,6 +28,10 @@ class Controller {
                 res.status(201).json(newCart)
             })
             .catch(err => {
+                console.log(err);
+                if (err.errors.productId || err.errors.userId || err.errors.status) {
+                    res.status(409).json(err)
+                }
                 res.status(500).json(err)
             })
     }

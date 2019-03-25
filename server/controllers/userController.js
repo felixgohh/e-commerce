@@ -30,25 +30,43 @@ class Controller {
                         }
                         let fullName = `${user.first_name} ${user.last_name}`
                         let token = jwt.sign(payload)
-                        res.status(200).json({ token, userId: user._id, name: fullName })
+                        res.status(200).json({ token, userId: user._id, name: fullName, role: user.role })
                     }
                 }
+            })
+            .catch(err => {
+                // console.log(err);
+                if (err.errors.email || err.errors.password) {
+                    res.status(409).json(err.message)
+                }
+                res.status(500).json(err.message)
+
             })
     }
 
     static signUp(req, res) {
+        console.log('masuk signup');
+        
         userModel
             .create({
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
                 email: req.body.email,
-                password: bcryptjs.hash(req.body.password)
+                password: req.body.password,
+                role: 'user'
             })
             .then(newUser => {
                 res.status(201).json(newUser)
             })
             .catch(err => {
-                res.status(500).json(err.message)
+                console.log(err);
+
+                console.log(err.errors);
+                if (err.errors.email || err.errors.first_name || err.errors.last_name || err.errors.password || err.errors.role) {
+                    res.status(409).json(err.message)
+                } else {
+                    res.status(500).json(err.message)
+                }
             })
     }
 
@@ -87,7 +105,7 @@ class Controller {
                 }
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 res.status(500).json(err)
             })
     }

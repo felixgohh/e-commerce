@@ -1,13 +1,12 @@
-const articleModel = require('../models/article')
+const userModel = require('../models/user')
 
 module.exports = (req, res, next) => {
     let userId = req.headers.authorized
-    let articleId = req.headers.articleid
 
-    articleModel
-        .findById(articleId)
-        .then(article => {
-            if (article.user_id == userId) {
+    userModel
+        .findById(userId)
+        .then(user => {
+            if (user.role == 'admin') {
                 next()
             } else {
                 throw new Error('Not authorized to complete action')
